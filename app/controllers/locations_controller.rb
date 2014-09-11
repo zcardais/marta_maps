@@ -15,10 +15,12 @@ class LocationsController < ApplicationController
 
     @bus_count = 0
 
+    @bus_longlats = {}
+
     @buses.each do |bus|
       if nearby(@location.longitude, @location.latitude, bus["LONGITUDE"].to_f, bus["LATITUDE"].to_f)
         @bus_count += 1
-      else
+        @bus_longlats[bus["LATITUDE"]] = bus["LONGITUDE"]
       end
     end
   end
