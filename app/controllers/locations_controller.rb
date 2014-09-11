@@ -10,7 +10,36 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
+    source = 'http://developer.itsmarta.com/BRDRestService/BRDRestService.svc/GetAllBus'
+    @buses = fetch_url_data(source)
+
+    @message = ""
+
+    @buses.each do |bus|
+      if nearby(@location.longitude, @location.latitude, bus["LONGITUDE"].to_f, bus["LATITUDE"].to_f)
+        @message = "A bus is nearby!"
+      else
+        @message = "Sorry, it's gonna be a while, buddy."
+      end
+    end
   end
+
+
+  def fetch_url_data(source)
+    http = Net::HTTP.get_response(URI.parse(source))
+    data = http.body
+    response = JSON.parse(data)
+    return response
+  end
+
+  def nearby(lng1, lat1, lng2, lat2)
+    if (lng1 - lng2).abs <= 0.01 && (lat1 - lat2).abs <= 0.01
+      return true
+    else
+      return false
+    end
+  end
+
 
   # GET /locations/new
   def new
