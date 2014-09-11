@@ -17,7 +17,11 @@
 
 <p>
 	<strong>Where's the bus?</strong><br />
-	<%= @message %>
+	<% if @bus_count >= 1 %>
+		There is a bus nearby!
+	<% else %>
+		Waiting is the hardest part.
+	<% end %>
 </p>
 
 <%= link_to 'Edit', edit_location_path(@location) %> |

@@ -13,13 +13,12 @@ class LocationsController < ApplicationController
     source = 'http://developer.itsmarta.com/BRDRestService/BRDRestService.svc/GetAllBus'
     @buses = fetch_url_data(source)
 
-    @message = ""
+    @bus_count = 0
 
     @buses.each do |bus|
       if nearby(@location.longitude, @location.latitude, bus["LONGITUDE"].to_f, bus["LATITUDE"].to_f)
-        @message = "A bus is nearby!"
+        @bus_count += 1
       else
-        @message = "Sorry, it's gonna be a while, buddy."
       end
     end
   end
